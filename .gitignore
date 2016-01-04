@@ -1,2 +1,6 @@
 pfa
 scoringengine_org
+*.pyc
+*.swp
+titus/.eggs/
+titus/titus.egg-info/
