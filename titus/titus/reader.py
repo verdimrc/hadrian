@@ -398,7 +398,7 @@ def _readBoolean(data, dot):
         raise PFASyntaxException("expected boolean, not " + _trunc(repr(data)), dot)
 
 def _readInt(data, dot):
-    if isinstance(data, int):
+    if isinstance(data, (int, long)):
         if -2147483648 <= data <= 2147483647:
             return data
         else:
