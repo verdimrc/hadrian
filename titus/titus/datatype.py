@@ -5,13 +5,12 @@
 # Open Data Research LLC, or Open Data Capital LLC.)
 # 
 # This file is part of Hadrian.
-# 
-# Licensed under the Hadrian Personal Use and Evaluation License (PUEL);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
-#     http://raw.githubusercontent.com/opendatagroup/hadrian/master/LICENSE
-# 
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -436,7 +435,7 @@ class AvroString(AvroIdentifier):
         return "string"
 
 class AvroEnum(AvroIdentifier, AvroCompiled):
-    """Avro "enum" type a small collection of string-labeled values."""
+    """Avro "enum" type for a small collection of string-labeled values."""
     def __init__(self, symbols, name=None, namespace=None):
         """Create an AvroEnum manually.
 
@@ -556,7 +555,7 @@ class AvroUnion(AvroType):
         """Create an AvroUnion manually.
 
         :type types: list of titus.datatype.AvroType
-        :param types: possible types for this union
+        :param types: possible types for this union in the order of their resolution
         """
         names = set([x.name for x in types])
         if len(types) != len(names):
@@ -638,6 +637,7 @@ class AvroPlaceholder(object):
         
     @property
     def avroType(self):
+        """Called after ``titus.datatype.AvroTypeBuilder`` ``resolveTypes`` to get the resolved type."""
         return self.forwardDeclarationParser.lookup(self.original)
 
     def __eq__(self, other):
@@ -652,19 +652,27 @@ class AvroPlaceholder(object):
         return hash(self.avroType)
 
     def __repr__(self):
+        """Represents the placeholder as its resolved type in JSON or ``{"type": "unknown"}`` if not resolved yet."""
         if self.forwardDeclarationParser.contains(self.original):
             return repr(self.forwardDeclarationParser.lookup(self.original))
         else:
             return '{"type": "unknown"}'
 
     def toJson(self):
+        """Represent the resolved type as a JSON string."""
         return json.dumps(self.jsonNode())
 
     def jsonNode(self, memo=set()):
+        """Represent the resolved type as a Jackson node.
+
+        :type memo: set of strings
+        :param memo: used to avoid infinite loops with recursive records
+        """
         return self.avroType.jsonNode(memo)
 
     @property
     def parser(self):
+        """The ``titus.datatype.ForwardDeclarationParser`` responsible for this placeholder."""
         return self.forwardDeclarationParser
 
 class AvroFilledPlaceholder(AvroPlaceholder):

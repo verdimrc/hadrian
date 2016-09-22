@@ -5,13 +5,12 @@
 # Open Data Research LLC, or Open Data Capital LLC.)
 # 
 # This file is part of Hadrian.
-# 
-# Licensed under the Hadrian Personal Use and Evaluation License (PUEL);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
-#     http://raw.githubusercontent.com/opendatagroup/hadrian/master/LICENSE
-# 
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,8 +45,8 @@ setup(name="titus",
       scripts = ["scripts/pfainspector", "scripts/pfachain", "scripts/pfaexternalize", "scripts/pfarandom", "scripts/pfasize"],
       description="Python implementation of Portable Format for Analytics (PFA): producer, converter, and consumer.",
       test_suite="test",
-      install_requires=["python >= 2.6.6", "python < 3.0", "avro >= 1.7.6", "ply >= 3.4", "pytz >= 2015.4"],
-      tests_require=["python >= 2.6.6", "python < 3.0", "avro >= 1.7.6", "ply >= 3.4", "PyYAML >= 3.10", "numpy >= 1.6.1"],
+      install_requires=["avro >= 1.7.6", "ply >= 3.4"],
+      tests_require=["avro >= 1.7.6", "ply >= 3.4", "PyYAML >= 3.10", "numpy >= 1.6.1", "pytz == 2015.4"],
       )
 
 ### details of dependencies:
@@ -59,7 +58,8 @@ setup(name="titus",
 # Avro is required; it is an integral part of PFA (only versions 1.7.6 -- 1.7.7 have been tested).
 # PLY is required; it is used to parse PrettyPFA and Inspector commandlines (only version 3.4 has been tested).
 # 
-# PyYAML is an optional dependency; it is only used by the titus.reader.yamlToAst function (only version 3.11 has been tested).
-# Numpy is an optional dependency; it is only used by the producer modules (only version 1.7.1 has been tested).
+# PyYAML is an optional dependency; it is only used by the titus.reader.yamlToAst function (and only version 3.11 has been tested).
+# Numpy is an optional dependency; it is only used by the "interp", "la", "stat.test", and "model.reg" PFA libraries, as well as Titus producers (and only version 1.7.1 has been tested).
+# pytz is an optional dependency; it is only used by the "time" PFA library (2015.4 is required for adherence to PFA 0.8.1).
 # 
 # The test suite attempts to import all optional dependencies.

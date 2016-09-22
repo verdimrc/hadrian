@@ -3,13 +3,12 @@
 // Open Data Research LLC, or Open Data Capital LLC.)
 // 
 // This file is part of Hadrian.
-// 
-// Licensed under the Hadrian Personal Use and Evaluation License (PUEL);
+// Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
-//     http://raw.githubusercontent.com/opendatagroup/hadrian/master/LICENSE
-// 
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,13 +37,24 @@ import com.opendatagroup.hadrian.reader.jsonToAst
 import com.opendatagroup.hadrian.util.convertToJson
 
 package yaml {
+  /** Converts a YAML file into its equivalent JSON (if possible).
+    */
   object yamlToJson extends Function1[String, String] {
     private val safeConstructor = new SafeConstructor
 
     private def yaml: Yaml = new Yaml(new ConstructorForJsonConversion)
 
+    /** @param in input YAML
+      * @return equivalent JSON
+      */
     def apply(in: java.io.InputStream): String = convertToJson(yaml.load(in))
+    /** @param in input YAML
+      * @return equivalent JSON
+      */
     def apply(in: java.io.Reader): String = convertToJson(yaml.load(in))
+    /** @param in input YAML
+      * @return equivalent JSON
+      */
     def apply(in: String): String = convertToJson(yaml.load(in))
 
     private class ConstructorForJsonConversion extends SafeConstructor {
@@ -133,13 +143,24 @@ package yaml {
     }
   }
 
+  /** Reads PFA from serialized YAML into an abstract syntax tree.
+    */
   object yamlToAst extends Function1[String, EngineConfig] {
+    /** @param src input YAML
+      * @return a PFA configuration that has passed syntax but not semantics checks
+      */
     def apply(src: java.io.File): EngineConfig =
       jsonToAst(yamlToJson(new Scanner(src).useDelimiter("\\A").next()))
 
+    /** @param src input YAML
+      * @return a PFA configuration that has passed syntax but not semantics checks
+      */
     def apply(src: java.io.InputStream): EngineConfig =
       jsonToAst(yamlToJson(new Scanner(src).useDelimiter("\\A").next()))
 
+    /** @param src input YAML
+      * @return a PFA configuration that has passed syntax but not semantics checks
+      */
     def apply(src: String): EngineConfig = jsonToAst(yamlToJson(src))
   }
 }

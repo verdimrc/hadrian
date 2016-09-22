@@ -3,13 +3,12 @@
 # Open Data Research LLC, or Open Data Capital LLC.)
 # 
 # This file is part of Hadrian.
-# 
-# Licensed under the Hadrian Personal Use and Evaluation License (PUEL);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
-#     http://raw.githubusercontent.com/opendatagroup/hadrian/master/LICENSE
-# 
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,11 +19,18 @@
 #'
 #' Extracts a tree from a forest made by the gbm library.
 #' @param gbm an object of class "gbm"
-#' @param whichTree FIXME
-#' @return FIXME
+#' @param whichTree  the number of the tree to extract
+#' @return tree that is extracted from gbm object
+#' @import gbm
 #' @export pfa.gbm.extractTree
 #' @examples
-#' FIXME
+#' X1 <- runif(100)
+#' X2 <- rnorm(100)
+#' Y <- rexp(100,5) + 5 * X1 - 4 * X2 
+#' Y <- Y > 0
+#' zz <- gbm(Y ~ X1 + X2)
+#' zz$problemType <- "Classification"
+#' zz1 <- pfa.gbm.extractTree(zz)
 
 pfa.gbm.extractTree <- function(gbm, whichTree = 1) {
     if (!("gbm" %in% class(gbm)))
@@ -62,16 +68,26 @@ pfa.gbm.extractTree <- function(gbm, whichTree = 1) {
 #' pfa.gbm.buildOneTree
 #'
 #' Builds one tree extracted by pfa.gbm.extractTree.
-#' @param tree FIXME
-#' @param categoricalLookup FIXME
-#' @param whichNode FIXME
-#' @param valueNeedsTag FIXME
-#' @param dataLevels FIXME
-#' @param fieldTypes FIXME
-#' @return FIXME
+#' @param tree tree object
+#' @param categoricalLookup splits used
+#' @param whichNode  left or right node for categoricalLookup
+#' @param valueNeedsTag flag for whether node needs label
+#' @param dataLevels levels of data
+#' @param fieldTypes type of fields
+#' @return PFA as a list-of-lists that can be inserted into a cell or pool
 #' @export pfa.gbm.buildOneTree
 #' @examples
-#' FIXME
+#' X1 <- runif(100)
+#' X2 <- rnorm(100)
+#' Y <- rexp(100,5) + 5 * X1 - 4 * X2
+#' Y <- Y > 0
+#' zz <- gbm(Y ~ X1 + X2)
+#' zz$problemType <- "Classification"
+#' zz1 <- pfa.gbm.extractTree(zz)
+#' zz2 <- pfa.gbm.buildOneTree(zz1$treeTable, list(), 1)
+
+
+
 
 pfa.gbm.buildOneTree <- function(tree, categoricalLookup, whichNode, valueNeedsTag = TRUE, dataLevels = NULL, fieldTypes = NULL) {
     node <- tree[whichNode,]

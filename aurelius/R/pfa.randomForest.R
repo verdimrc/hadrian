@@ -3,13 +3,12 @@
 # Open Data Research LLC, or Open Data Capital LLC.)
 # 
 # This file is part of Hadrian.
-# 
-# Licensed under the Hadrian Personal Use and Evaluation License (PUEL);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
-#     http://raw.githubusercontent.com/opendatagroup/hadrian/master/LICENSE
-# 
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,12 +19,20 @@
 #'
 #' Extracts a tree from a forest made by the randomForest library.
 #' @param forest an object of class "randomForest"
-#' @param whichTree FIXME
-#' @param labelVar FIXME
-#' @return FIXME
+#' @param whichTree which tree to extract
+#' @param labelVar flag for whether var needs to be labeled
+#' @return single tree extracted from random forest
+#' @import randomForest
 #' @export pfa.randomForest.extractTree
 #' @examples
-#' FIXME
+#' X1 <- runif(100)
+#' X2 <- rnorm(100)
+#' Y <- rexp(100,5) + 5 * X1 - 4 * X2
+#' Y <- Y > 0
+#' Y <- factor(Y)
+#' zz <- randomForest(Y ~ X1 + X2)
+#' zz1 <- pfa.randomForest.extractTree(zz)
+
 
 pfa.randomForest.extractTree <- function(forest, whichTree = 1, labelVar = FALSE) {
     if (!("randomForest" %in% class(forest)))
@@ -76,15 +83,24 @@ pfa.randomForest.extractTree <- function(forest, whichTree = 1, labelVar = FALSE
 #' pfa.randomForest.buildOneTree
 #'
 #' Builds one tree extracted by pfa.randomForest.extractTree.
-#' @param tree FIXME
-#' @param whichNode FIXME
-#' @param valueNeedsTag FIXME
-#' @param dataLevels FIXME
-#' @param fieldTypes FIXME
+#' @param tree tree to build
+#' @param whichNode the node to extract
+#' @param valueNeedsTag flag for whether the node needs a label
+#' @param dataLevels levels of data
+#' @param fieldTypes type of fields
 #' @return PFA as a list-of-lists that can be inserted into a cell or pool
+#' @import randomForest
 #' @export pfa.randomForest.buildOneTree
 #' @examples
-#' FIXME
+#' X1 <- runif(100)
+#' X2 <- rnorm(100)
+#' Y <- rexp(100,5) + 5 * X1 - 4 * X2
+#' Y <- Y > 0
+#' Y <- factor(Y)
+#' zz <- randomForest(Y ~ X1 + X2)
+#' zz1 <- pfa.randomForest.extractTree(zz)
+#' zz2 <- pfa.randomForest.buildOneTree(zz1, 1, TRUE, dataLevels = list())
+
 
 pfa.randomForest.buildOneTree <- function(tree, whichNode, valueNeedsTag, dataLevels, fieldTypes = NULL) {
     node <- tree[whichNode,]

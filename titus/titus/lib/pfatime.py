@@ -4,14 +4,13 @@
 # Copyright (C) 2014  Open Data ("Open Data" refers to
 # one or more of the following companies: Open Data Partners LLC,
 # Open Data Research LLC, or Open Data Capital LLC.)
-#
+# 
 # This file is part of Hadrian.
-#
-# Licensed under the Hadrian Personal Use and Evaluation License (PUEL);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://raw.githubusercontent.com/opendatagroup/hadrian/master/LICENSE
+#    http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,7 +21,9 @@
 import math
 import datetime
 
-import pytz
+def pytz():
+    import pytz as p
+    return p
 
 from titus.fcn import Fcn
 from titus.fcn import LibFcn
@@ -51,8 +52,8 @@ def tz(dt, zone, code, name, pos):
         return dt
     else:
         try:
-            return dt.astimezone(pytz.timezone(zone))
-        except pytz.exceptions.UnknownTimeZoneError:
+            return dt.astimezone(pytz().timezone(zone))
+        except pytz().exceptions.UnknownTimeZoneError:
             raise PFARuntimeException("unrecognized timezone string", code, name, pos)
 
 def tscheck(ts, code, name, pos):
@@ -135,8 +136,8 @@ class MakeTimestamp(LibFcn):
             if zone == "":
                 dt = datetime.datetime(year, month, day, hour, minute, second, microsecond, UTC())
             else:
-                dt = pytz.timezone(zone).localize(datetime.datetime(year, month, day, hour, minute, second, microsecond))
-        except pytz.exceptions.UnknownTimeZoneError:
+                dt = pytz().timezone(zone).localize(datetime.datetime(year, month, day, hour, minute, second, microsecond))
+        except pytz().exceptions.UnknownTimeZoneError:
             raise PFARuntimeException("unrecognized timezone string", self.errcodeBase + 0, self.name, pos)
         except ValueError:
             raise PFARuntimeException("timestamp undefined for given parameters", self.errcodeBase + 1, self.name, pos)

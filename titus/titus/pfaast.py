@@ -5,13 +5,12 @@
 # Open Data Research LLC, or Open Data Capital LLC.)
 # 
 # This file is part of Hadrian.
-# 
-# Licensed under the Hadrian Personal Use and Evaluation License (PUEL);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
-#     http://raw.githubusercontent.com/opendatagroup/hadrian/master/LICENSE
-# 
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -300,7 +299,7 @@ class SymbolTable(object):
         :rtype: titus.pfaast.SymbolTable
         :return: a symbol table containing nothing
         """
-        SymbolTable(None, {}, {}, {}, True, False)
+        return SymbolTable(None, {}, {}, {}, True, False)
 
 ############################################################ functions
 
@@ -4834,7 +4833,7 @@ class Forkeyval(Expression):
         :type map: titus.pfaast.Expression
         :param map: expression that evaluates to a map
         :type body: list of titus.pfaast.Expression
-        :param body: expressions to evaluate for each item of the array
+        :param body: expressions to evaluate for each item of the map
         :type pos: string or ``None``
         :param pos: source file location from the locator mark
         """
@@ -6094,7 +6093,7 @@ class Try(Expression):
         """:type exprs: list of titus.pfaast.Expression
         :param exprs: expressions to evaluate that might raise an exception
         :type filter: ``None`` or a list of strings and integers
-        :param filter: optional filter for error messages
+        :param filter: optional filter for error messages or error codes
         :type pos: string or ``None``
         :param pos: source file location from the locator mark
         """

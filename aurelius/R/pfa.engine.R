@@ -3,13 +3,12 @@
 # Open Data Research LLC, or Open Data Capital LLC.)
 # 
 # This file is part of Hadrian.
-# 
-# Licensed under the Hadrian Personal Use and Evaluation License (PUEL);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
-#     http://raw.githubusercontent.com/opendatagroup/hadrian/master/LICENSE
-# 
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,14 +24,14 @@ counter$n <- 0
 #' @param config list-of-lists representing a complete PFA document
 #' @param tempFile if NULL, generate the PFA as a string in memory and pass it without touching disk; if a string, save the PFA document in a temporary file and have Python load it from that file
 #' @return an object with a $action(...) method that can be used to score data
+#' @import RJSONIO
+#' @import rPython
 #' @export pfa.engine
 #' @examples
-#' pfa.engine(pfaDocument)   # where pfaDocument is created by pfa.config
+#' pfaDocument1 <- pfa.config(avro.double, avro.double, expression(input + 10))
+#' pfa.engine(pfaDocument1)   # where the pfaDocument is created by pfa.config
 
 pfa.engine <- function(config, tempFile = NULL) {
-    library(RJSONIO)
-    library(rPython)
-
     counter$n <- counter$n + 1
     name <- paste("engine_", counter$n, sep = "")
     method <- config$method

@@ -3,13 +3,12 @@
 // Open Data Research LLC, or Open Data Capital LLC.)
 // 
 // This file is part of Hadrian.
-// 
-// Licensed under the Hadrian Personal Use and Evaluation License (PUEL);
+// Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
-//     http://raw.githubusercontent.com/opendatagroup/hadrian/master/LICENSE
-// 
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -141,7 +140,24 @@ package object map {
         <nondeterministic type="unordered" />
       </doc>
     def errcodeBase = 26020
-    def apply[X <: AnyRef, Y](m: PFAMap[X]): PFAArray[Y] = PFAArray.fromVector(m.toMap.values.map(unbox).asInstanceOf[Seq[Y]].toVector)
+    def apply(m: AnyRef): PFAArray[_] = apply(m.asInstanceOf[PFAMap[AnyRef]])
+    def apply[X <: AnyRef](m: PFAMap[X]): PFAArray[_] = {
+      val out = m.toMap.values.toVector
+      if (out.isEmpty)
+        PFAArray.fromVector(out)
+      else if (out.forall(_.isInstanceOf[java.lang.Boolean]))
+        PFAArray.fromVector(out.map(_.asInstanceOf[java.lang.Boolean].booleanValue))
+      else if (out.forall(_.isInstanceOf[java.lang.Integer]))
+        PFAArray.fromVector(out.map(_.asInstanceOf[java.lang.Integer].intValue))
+      else if (out.forall(_.isInstanceOf[java.lang.Long]))
+        PFAArray.fromVector(out.map(_.asInstanceOf[java.lang.Long].longValue))
+      else if (out.forall(_.isInstanceOf[java.lang.Float]))
+        PFAArray.fromVector(out.map(_.asInstanceOf[java.lang.Float].floatValue))
+      else if (out.forall(_.isInstanceOf[java.lang.Double]))
+        PFAArray.fromVector(out.map(_.asInstanceOf[java.lang.Double].doubleValue))
+      else
+        PFAArray.fromVector(out)
+    }
   }
   provide(new Values)
 

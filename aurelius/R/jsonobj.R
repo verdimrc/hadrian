@@ -3,13 +3,12 @@
 # Open Data Research LLC, or Open Data Capital LLC.)
 # 
 # This file is part of Hadrian.
-# 
-# Licensed under the Hadrian Personal Use and Evaluation License (PUEL);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
-#     http://raw.githubusercontent.com/opendatagroup/hadrian/master/LICENSE
-# 
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +18,7 @@
 #' json.map
 #'
 #' Convenience function for making a (possibly empty) named list, which converts to a JSON object.
-#' @param args optional contents of the named list (as key-value pairs)
+#' @param ... optional contents of the named list (as key-value pairs)
 #' @return a named list
 #' @export json.map
 #' @examples
@@ -39,7 +38,7 @@ json.map <- function(...) {
 #' json.array
 #'
 #' Convenience function for making a (possibly empty) unnamed list, which converts to a JSON array.
-#' @param args optional contents of the unnamed list
+#' @param ... optional contents of the unnamed list
 #' @return an unnamed list
 #' @export json.array
 #' @examples
